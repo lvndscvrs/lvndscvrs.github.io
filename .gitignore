@@ -1,0 +1,19 @@
+# Медиа хранится вне git (на VM / в облаке), в репозиторий не коммитим
+posters/
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.mp4
+*.mov
+*.webm
+*.m4v
+*.avi
+*.mkv
+
+# Прочее
+__pycache__/
+*.pyc
+.DS_Store
+Thumbs.db

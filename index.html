@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Дмитрий Урусов — портфолио</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar__top">
+      <h1 class="name">дмитрий<br>урусов</h1>
+      <p class="role">junior motion +<br>graphic designer</p>
+    </div>
+
+    <div class="sidebar__mid">
+      <div class="side-block">
+        <span class="side-block__title">опыт</span>
+        <ul class="xp-mini">
+          <li><span class="xp-mini__years">2024—2025</span> FoxMotion Studio</li>
+          <li><span class="xp-mini__years">2025—2026</span> DADA Creative</li>
+        </ul>
+      </div>
+
+      <div class="side-block">
+        <span class="side-block__title">контакты</span>
+        <nav class="side-contacts">
+          <a href="https://t.me/dimassiquez" target="_blank" rel="noopener">tg: @dimassiquez</a>
+          <a href="mailto:design@dmitryurusov.ru">email: design@dmitryurusov.ru</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="sidebar__bottom">
+      <span class="meta">portfolio</span>
+      <span class="meta">2026</span>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main" id="works">
+
+    <header class="intro">
+      <h2 class="intro__title">избранные<br>работы</h2>
+      <p class="intro__sub"><span id="countWorks">0</span> проектов · реклама, моушн, спортивные мероприятия</p>
+    </header>
+
+    <!-- РУБРИКАТОР -->
+    <div class="filters" id="filters"></div>
+
+    <!-- СЕТКА -->
+    <section class="grid" id="grid"></section>
+
+    <footer class="foot">
+      <span>© Дмитрий Урусов, 2026</span>
+      <a href="mailto:design@dmitryurusov.ru">design@dmitryurusov.ru</a>
+    </footer>
+  </main>
+</div>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox" aria-hidden="true">
+  <button class="lightbox__close" id="lbClose" aria-label="Закрыть">×</button>
+  <button class="lightbox__nav lightbox__nav--prev" id="lbPrev" aria-label="Назад">‹</button>
+  <button class="lightbox__nav lightbox__nav--next" id="lbNext" aria-label="Вперёд">›</button>
+  <div class="lightbox__stage" id="lbStage"></div>
+  <div class="lightbox__caption" id="lbCaption"></div>
+</div>
+
+<script src="data.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
