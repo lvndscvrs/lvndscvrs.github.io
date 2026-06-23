@@ -159,6 +159,10 @@ img,video{display:block;max-width:100%}
 .card__media img,.card__media video{width:100%;height:auto;display:block}
 .card.loading .card__media{min-height:160px}
 
+/* Превью мягко проявляется после декодирования (место уже зарезервировано) */
+.card__img{opacity:0;transition:opacity .45s ease}
+.card__img.is-loaded{opacity:1}
+
 .card__overlay{
   position:absolute;inset:0;z-index:3;
   display:flex;align-items:flex-end;
@@ -188,9 +192,9 @@ img,video{display:block;max-width:100%}
 .card__play svg{fill:#fff;width:18px;height:18px;margin-left:2px;transition:fill .2s}
 .card:hover .card__play svg{fill:#000}
 
-/* видео-заглушка (без загрузки самого файла) */
+/* видео-заглушка (без загрузки самого файла); пропорция задаётся inline
+   по реальным размерам постера в script.js — карточки не «прыгают» */
 .card__media--video{
-  aspect-ratio:16/10;
   background:
     radial-gradient(120% 90% at 50% 0%, #1c1c1f 0%, #101012 55%, #0a0a0b 100%);
 }

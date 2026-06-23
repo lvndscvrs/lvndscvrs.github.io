@@ -26,6 +26,18 @@
   var PLAY_SVG =
     '<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
 
+  // Плавное проявление картинки: место уже зарезервировано, поэтому вместо
+  // резкого «щелчка» превью мягко появляется, как только декодировано.
+  function fadeOnLoad(img) {
+    if (img.complete && img.naturalWidth) {
+      img.classList.add("is-loaded");
+      return;
+    }
+    function reveal() { img.classList.add("is-loaded"); }
+    img.addEventListener("load", reveal);
+    img.addEventListener("error", reveal); // не прячем превью при сбое загрузки
+  }
+
   // ---- build рубрикатор ----
   function buildFilters() {
     var frag = document.createDocumentFragment();
@@ -92,10 +104,31 @@
     var media = document.createElement("div");
     media.className = "card__media";
 
+    // Резервируем место под медиа заранее, чтобы при загрузке карточки
+    // не «прыгали»: задаём элементу его пропорцию (CLS = 0).
+    if (item.w && item.h) {
+      if (item.type === "image") {
+        // у картинок — настоящая пропорция
+        media.style.aspectRatio = item.w + " / " + item.h;
+      } else {
+        // у видео постер заполняет карточку через object-fit:cover, поэтому
+        // ограничиваем пропорцию, чтобы сверхширокие «ленты» не превращались
+        // в тонкие полоски и сетка выглядела опрятно.
+        var ratio = Math.min(1.85, Math.max(0.6, item.w / item.h));
+        media.style.aspectRatio = ratio.toFixed(4);
+      }
+    }
+
     if (item.type === "image") {
       var img = document.createElement("img");
       img.loading = "lazy";
+      img.decoding = "async";
       img.alt = item.title;
+      img.className = "card__img";
+      // width/height-атрибуты дают браузеру пропорцию ещё до загрузки файла —
+      // место под картинку резервируется сразу, сетка не пересчитывается.
+      if (item.w && item.h) { img.width = item.w; img.height = item.h; }
+      fadeOnLoad(img);
       img.src = encode(item.src);
       media.appendChild(img);
     } else {
@@ -107,8 +140,10 @@
       if (item.poster) {
         var pimg = document.createElement("img");
         pimg.loading = "lazy";
+        pimg.decoding = "async";
         pimg.alt = item.title;
-        pimg.className = "card__poster";
+        pimg.className = "card__poster card__img";
+        fadeOnLoad(pimg);
         pimg.src = encode(item.poster);
         media.appendChild(pimg);
       }
