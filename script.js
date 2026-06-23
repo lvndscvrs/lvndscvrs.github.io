@@ -77,6 +77,46 @@
     render();
   }
 
+  // Наведение на видео-карточку → подгружаем и проигрываем лёгкий клип.
+  // Файл запрашивается лениво (только на mouseenter), при уходе курсора
+  // воспроизведение останавливается и элемент удаляется, освобождая память
+  // и сетевое соединение. Hover есть только на десктопе — на тач-устройствах
+  // ничего не грузится, остаётся постер + тап в лайтбокс.
+  function enableHoverPreview(card, media, src) {
+    var video = null;
+
+    function start() {
+      if (video) return;
+      video = document.createElement("video");
+      video.className = "card__preview";
+      video.muted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = "auto";
+      video.addEventListener("playing", function () {
+        media.classList.add("is-previewing"); // показываем клип, прячем «play»
+      });
+      video.src = src;
+      media.appendChild(video);
+      var p = video.play();
+      if (p && p.catch) p.catch(function () {}); // автоплей может отклониться — игнорируем
+    }
+
+    function stop() {
+      if (!video) return;
+      var v = video;
+      video = null;
+      media.classList.remove("is-previewing");
+      v.pause();
+      v.removeAttribute("src"); // обрываем загрузку файла
+      v.load();
+      v.remove();
+    }
+
+    card.addEventListener("mouseenter", start);
+    card.addEventListener("mouseleave", stop);
+  }
+
   // ---- render grid ----
   function render() {
     visible = current === "all"
@@ -147,6 +187,13 @@
         pimg.src = encode(item.poster);
         media.appendChild(pimg);
       }
+
+      // Превью по наведению: лёгкий клип (previews/<хэш>.mp4) грузится ТОЛЬКО
+      // при ховере, поэтому на скорость первой загрузки сайта это не влияет.
+      var previewSrc = item.preview || (item.poster
+        ? item.poster.replace(/^posters\//, "previews/").replace(/\.[a-z]+$/i, ".mp4")
+        : null);
+      if (previewSrc) enableHoverPreview(card, media, previewSrc);
 
       var play = document.createElement("div");
       play.className = "card__play";

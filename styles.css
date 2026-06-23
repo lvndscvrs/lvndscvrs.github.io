@@ -203,6 +203,14 @@ img,video{display:block;max-width:100%}
   position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;display:block;z-index:1;
 }
+/* превью-клип по наведению: лежит над постером, мягко проявляется */
+.card__preview{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;z-index:2;
+  opacity:0;transition:opacity .3s ease;pointer-events:none;
+}
+.card__media.is-previewing .card__preview{opacity:1}
+.card__media.is-previewing .card__play{opacity:0}
 .card__media--video::after{       /* мягкая «киноплёнка» сверху */
   content:"";position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(transparent 60%, rgba(0,0,0,.45));
